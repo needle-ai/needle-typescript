@@ -1,0 +1,25 @@
+name: Release Needle Typescript
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish-to-npmjs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.1.13"
+
+      - name: Build needle
+        run: bun i && bun run build
+
+      - name: Publish needle
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

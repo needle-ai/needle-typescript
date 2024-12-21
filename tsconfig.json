@@ -1,0 +1,14 @@
+{
+    "extends": "@tsconfig/recommended/tsconfig.json",
+    "compilerOptions": {
+      "rootDir": "src",
+      "outDir": "temp",
+      "declaration": true,
+      "sourceMap": true,
+      "declarationMap": true,
+      "target": "ES2022",
+      "removeComments": false,
+      "types": ["node"]
+    },
+    "include": ["src/**/*"],
+  }

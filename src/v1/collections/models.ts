@@ -97,3 +97,48 @@ export const GetCollectionDetailsResponseSchema = z.object({
 export type GetCollectionDetailsResponse = z.infer<
   typeof GetCollectionDetailsResponseSchema
 >;
+
+export const CollectionStatsSchema = z.object({
+  total_files: z.number(),
+  total_chunks: z.number(),
+  last_updated_at: z.string(),
+});
+
+export type CollectionStats = z.infer<typeof CollectionStatsSchema>;
+
+export const GetCollectionStatsResponseSchema = z.object({
+  result: CollectionStatsSchema,
+});
+
+export type GetCollectionStatsResponse = z.infer<
+  typeof GetCollectionStatsResponseSchema
+>;
+
+export const CollectionFileSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  size: z.number(),
+  content_type: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export type CollectionFile = z.infer<typeof CollectionFileSchema>;
+
+export const ListCollectionFilesRequestSchema = z.object({
+  collection_id: z.string(),
+  offset: z.number().default(0),
+  limit: z.number().min(1).max(500).default(100),
+});
+
+export type ListCollectionFilesRequest = z.infer<
+  typeof ListCollectionFilesRequestSchema
+>;
+
+export const ListCollectionFilesResponseSchema = z.object({
+  result: z.array(CollectionFileSchema),
+});
+
+export type ListCollectionFilesResponse = z.infer<
+  typeof ListCollectionFilesResponseSchema
+>;

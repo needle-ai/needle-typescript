@@ -8,6 +8,9 @@ import {
   AddFilesToCollectionResponseSchema,
   ListCollectionsResponseSchema,
   GetCollectionDetailsResponseSchema,
+  GetCollectionStatsResponseSchema,
+  type ListCollectionFilesRequest,
+  ListCollectionFilesResponseSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -60,6 +63,45 @@ export class NeedleCollectionsClient {
     }
 
     return GetCollectionDetailsResponseSchema.parse(await res.json()).result;
+  }
+
+  async getStats(collectionId: string) {
+    const url = `${this.needleUrl}/api/v1/collections/${collectionId}/stats`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return GetCollectionStatsResponseSchema.parse(await res.json()).result;
+  }
+
+  async listFiles({
+    collection_id,
+    offset = 0,
+    limit = 100,
+  }: ListCollectionFilesRequest) {
+    const queryParams = new URLSearchParams({
+      offset: offset.toString(),
+      limit: limit.toString(),
+    });
+
+    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files?${queryParams.toString()}`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return ListCollectionFilesResponseSchema.parse(await res.json()).result;
   }
 
   async search({ collection_id, ...request }: SearchCollectionRequest) {

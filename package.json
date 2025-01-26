@@ -22,28 +22,26 @@
   "author": "Onur Eken",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/v1/index.js",
+  "types": "./dist/v1/index.d.ts",
   "exports": {
     ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/v1/index.d.ts",
+      "require": "./dist/v1/index.cjs",
+      "import": "./dist/v1/index.js",
+      "default": "./dist/v1/index.js"
     },
     "./v1": {
-      "require": {
-        "types": "./dist/v1/index.d.cts",
-        "default": "./dist/v1/index.cjs"
-      },
-      "import": {
-        "types": "./dist/v1/index.d.ts",
-        "default": "./dist/v1/index.js"
-      }
+      "types": "./dist/v1/index.d.ts",
+      "require": "./dist/v1/index.cjs",
+      "import": "./dist/v1/index.js",
+      "default": "./dist/v1/index.js"
+    },
+    "./dist/v1": {
+      "types": "./dist/v1/index.d.ts",
+      "require": "./dist/v1/index.cjs",
+      "import": "./dist/v1/index.js",
+      "default": "./dist/v1/index.js"
     }
   },
   "repository": {
@@ -61,7 +59,7 @@
     "@typescript-eslint/parser": "^8.1.0",
     "eslint": "^8.57.0",
     "prettier": "^3.3.2",
-    "tsup": "^ 8.3.4",
+    "tsup": "^8.3.4",
     "typescript": "^5.5.3"
   },
   "peerDependencies": {},

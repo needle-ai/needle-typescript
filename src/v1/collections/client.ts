@@ -2,6 +2,8 @@ import { ApiErrorSchema } from "../models";
 import {
   type SearchCollectionRequest,
   SearchCollectionResponseSchema,
+  CreateCollectionRequest,
+  CreateCollectionResponseSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -41,5 +43,22 @@ export class NeedleCollectionsClient {
     }
 
     return SearchCollectionResponseSchema.parse(await res.json()).result;
+  }
+
+  async create(request: CreateCollectionRequest) {
+    const url = `${this.needleUrl}/api/v1/collections`;
+    const body = JSON.stringify(request);
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+      body,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return CreateCollectionResponseSchema.parse(await res.json()).result;
   }
 }

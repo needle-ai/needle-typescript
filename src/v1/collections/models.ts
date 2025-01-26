@@ -22,3 +22,25 @@ export type SearchResult = z.infer<typeof SearchResultSchema>;
 export const SearchCollectionResponseSchema = z.object({
   result: z.array(SearchResultSchema),
 });
+
+export const CreateCollectionRequestSchema = z.object({
+  name: z.string().min(1),
+  file_ids: z.array(z.string()).nullable().optional(),
+  model: z
+    .enum(["basilikum-minima", "mate-meta", "tortellini-maxima"])
+    .nullable()
+    .optional()
+    .default("basilikum-minima"),
+});
+
+export type CreateCollectionRequest = z.infer<
+  typeof CreateCollectionRequestSchema
+>;
+
+export const CreateCollectionResponseSchema = z.object({
+  result: z.object({}).required(),
+});
+
+export type CreateCollectionResponse = z.infer<
+  typeof CreateCollectionResponseSchema
+>;

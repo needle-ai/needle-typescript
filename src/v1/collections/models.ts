@@ -75,9 +75,9 @@ export const CollectionSchema = z.object({
   id: z.string(),
   name: z.string(),
   created_at: z.string(),
-  updated_at: z.string(),
-  model: z.string(),
-  owner_id: z.string(),
+  updated_at: z.string().optional(),
+  model: z.string().optional(),
+  owner_id: z.string().optional(),
 });
 
 export type Collection = z.infer<typeof CollectionSchema>;
@@ -99,9 +99,9 @@ export type GetCollectionDetailsResponse = z.infer<
 >;
 
 export const CollectionStatsSchema = z.object({
-  total_files: z.number(),
-  total_chunks: z.number(),
-  last_updated_at: z.string(),
+  total_files: z.number().optional(),
+  total_chunks: z.number().optional(),
+  last_updated_at: z.string().optional(),
 });
 
 export type CollectionStats = z.infer<typeof CollectionStatsSchema>;
@@ -117,10 +117,10 @@ export type GetCollectionStatsResponse = z.infer<
 export const CollectionFileSchema = z.object({
   id: z.string(),
   name: z.string(),
-  size: z.number(),
-  content_type: z.string(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  size: z.number().optional(),
+  content_type: z.string().optional(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 });
 
 export type CollectionFile = z.infer<typeof CollectionFileSchema>;

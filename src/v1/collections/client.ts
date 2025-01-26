@@ -85,12 +85,7 @@ export class NeedleCollectionsClient {
     offset = 0,
     limit = 100,
   }: ListCollectionFilesRequest) {
-    const queryParams = new URLSearchParams({
-      offset: offset.toString(),
-      limit: limit.toString(),
-    });
-
-    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files?${queryParams.toString()}`;
+    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files?offset:${offset}&limit:${limit}`;
 
     const res = await fetch(url, {
       method: "GET",

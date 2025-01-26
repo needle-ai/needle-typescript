@@ -89,3 +89,11 @@ export const ListCollectionsResponseSchema = z.object({
 export type ListCollectionsResponse = z.infer<
   typeof ListCollectionsResponseSchema
 >;
+
+export const GetCollectionDetailsResponseSchema = z.object({
+  result: CollectionSchema,
+});
+
+export type GetCollectionDetailsResponse = z.infer<
+  typeof GetCollectionDetailsResponseSchema
+>;

@@ -7,6 +7,7 @@ import {
   type AddFilesToCollectionRequest,
   AddFilesToCollectionResponseSchema,
   ListCollectionsResponseSchema,
+  GetCollectionDetailsResponseSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -44,6 +45,21 @@ export class NeedleCollectionsClient {
     }
 
     return ListCollectionsResponseSchema.parse(await res.json()).result;
+  }
+
+  async get(collectionId: string) {
+    const url = `${this.needleUrl}/api/v1/collections/${collectionId}`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return GetCollectionDetailsResponseSchema.parse(await res.json()).result;
   }
 
   async search({ collection_id, ...request }: SearchCollectionRequest) {

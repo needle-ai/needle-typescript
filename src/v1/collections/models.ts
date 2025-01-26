@@ -70,3 +70,22 @@ export const AddFilesToCollectionResponseSchema = z.object({
 export type AddFilesToCollectionResponse = z.infer<
   typeof AddFilesToCollectionResponseSchema
 >;
+
+export const CollectionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  model: z.string(),
+  owner_id: z.string(),
+});
+
+export type Collection = z.infer<typeof CollectionSchema>;
+
+export const ListCollectionsResponseSchema = z.object({
+  result: z.array(CollectionSchema),
+});
+
+export type ListCollectionsResponse = z.infer<
+  typeof ListCollectionsResponseSchema
+>;

@@ -6,6 +6,7 @@ import {
   CreateCollectionResponseSchema,
   type AddFilesToCollectionRequest,
   AddFilesToCollectionResponseSchema,
+  ListCollectionsResponseSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -28,6 +29,21 @@ export class NeedleCollectionsClient {
       "Content-Type": "application/json",
       "x-api-key": apiKey,
     };
+  }
+
+  async list() {
+    const url = `${this.needleUrl}/api/v1/collections`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return ListCollectionsResponseSchema.parse(await res.json()).result;
   }
 
   async search({ collection_id, ...request }: SearchCollectionRequest) {

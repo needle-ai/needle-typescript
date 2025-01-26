@@ -1,5 +1,9 @@
 import { ApiErrorSchema } from "../models";
-import { type GetUploadUrlRequest, GetUploadUrlResponseSchema } from "./models";
+import {
+  type GetUploadUrlRequest,
+  GetUploadUrlResponseSchema,
+  GetDownloadUrlResponseSchema,
+} from "./models";
 
 export class NeedleFilesClient {
   private readonly needleUrl: string;
@@ -28,8 +32,21 @@ export class NeedleFilesClient {
       throw ApiErrorSchema.parse(await res.json()).error;
     }
 
-    const json = await res.json();
-    console.log("API Response:", JSON.stringify(json, null, 2));
-    return GetUploadUrlResponseSchema.parse(json).result;
+    return GetUploadUrlResponseSchema.parse(await res.json()).result;
+  }
+
+  async getDownloadUrl(fileId: string) {
+    const url = `${this.needleUrl}/api/v1/files/${fileId}/download_url`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return GetDownloadUrlResponseSchema.parse(await res.json()).result;
   }
 }

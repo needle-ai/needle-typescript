@@ -44,3 +44,29 @@ export const CreateCollectionResponseSchema = z.object({
 export type CreateCollectionResponse = z.infer<
   typeof CreateCollectionResponseSchema
 >;
+
+export const AddFilesToCollectionFileSchema = z.object({
+  name: z.string(),
+  url: z.string(),
+});
+
+export type AddFilesToCollectionFile = z.infer<
+  typeof AddFilesToCollectionFileSchema
+>;
+
+export const AddFilesToCollectionRequestSchema = z.object({
+  collection_id: z.string(),
+  files: z.array(AddFilesToCollectionFileSchema),
+});
+
+export type AddFilesToCollectionRequest = z.infer<
+  typeof AddFilesToCollectionRequestSchema
+>;
+
+export const AddFilesToCollectionResponseSchema = z.object({
+  result: z.array(z.object({})),
+});
+
+export type AddFilesToCollectionResponse = z.infer<
+  typeof AddFilesToCollectionResponseSchema
+>;

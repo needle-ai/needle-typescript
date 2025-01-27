@@ -142,3 +142,53 @@ export const ListCollectionFilesResponseSchema = z.object({
 export type ListCollectionFilesResponse = z.infer<
   typeof ListCollectionFilesResponseSchema
 >;
+
+export interface FolderConfig {
+  path: string;
+  recursive: boolean;
+}
+
+export interface CreateLocalConnectorRequest {
+  os: string;
+  mac_address: string;
+  device_name: string;
+  collection_id: string;
+  folders: FolderConfig[];
+}
+
+export const CreateLocalConnectorResponseSchema = z.object({
+  result: z.object({
+    id: z.string(),
+    os: z.string(),
+    mac_address: z.string(),
+    device_name: z.string(),
+    collection_id: z.string(),
+    folders: z.array(
+      z.object({
+        path: z.string(),
+        recursive: z.boolean(),
+      }),
+    ),
+    created_at: z.string(),
+    updated_at: z.string(),
+  }),
+});
+
+export type CreateLocalConnectorResponse = z.infer<
+  typeof CreateLocalConnectorResponseSchema
+>;
+
+export interface DeleteCollectionFilesRequest {
+  collection_id: string;
+  file_ids: string[];
+}
+
+export const DeleteCollectionFilesResponseSchema = z.object({
+  result: z.object({
+    deleted_file_ids: z.array(z.string()),
+  }),
+});
+
+export type DeleteCollectionFilesResponse = z.infer<
+  typeof DeleteCollectionFilesResponseSchema
+>;

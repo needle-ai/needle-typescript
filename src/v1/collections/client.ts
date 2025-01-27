@@ -11,6 +11,10 @@ import {
   GetCollectionStatsResponseSchema,
   type ListCollectionFilesRequest,
   ListCollectionFilesResponseSchema,
+  type CreateLocalConnectorRequest,
+  CreateLocalConnectorResponseSchema,
+  type DeleteCollectionFilesRequest,
+  DeleteCollectionFilesResponseSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -148,5 +152,39 @@ export class NeedleCollectionsClient {
     }
 
     return AddFilesToCollectionResponseSchema.parse(await res.json()).result;
+  }
+
+  async createLocalConnector(request: CreateLocalConnectorRequest) {
+    const url = `${this.needleUrl}/api/v1/connectors/local`;
+    const body = JSON.stringify(request);
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+      body,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return CreateLocalConnectorResponseSchema.parse(await res.json()).result;
+  }
+
+  async deleteFiles({ collection_id, file_ids }: DeleteCollectionFilesRequest) {
+    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
+    const body = JSON.stringify({ file_ids });
+
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: this.headers,
+      body,
+    });
+
+    if (res.status >= 400) {
+      throw ApiErrorSchema.parse(await res.json()).error;
+    }
+
+    return DeleteCollectionFilesResponseSchema.parse(await res.json()).result;
   }
 }

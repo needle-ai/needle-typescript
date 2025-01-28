@@ -72,12 +72,9 @@ export type AddFilesToCollectionResponse = z.infer<
 >;
 
 export const CollectionSchema = z.object({
-  id: z.string(),
   name: z.string(),
   created_at: z.string(),
-  updated_at: z.string().optional(),
-  model: z.string().optional(),
-  owner_id: z.string().optional(),
+  search_queries: z.number(),
 });
 
 export type Collection = z.infer<typeof CollectionSchema>;

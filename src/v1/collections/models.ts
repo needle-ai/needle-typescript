@@ -175,17 +175,11 @@ export type CreateLocalConnectorResponse = z.infer<
   typeof CreateLocalConnectorResponseSchema
 >;
 
-export interface DeleteCollectionFilesRequest {
-  collection_id: string;
-  file_ids: string[];
-}
-
-export const DeleteCollectionFilesResponseSchema = z.object({
-  result: z.object({
-    deleted_file_ids: z.array(z.string()),
-  }),
+export const DeleteCollectionFilesRequestSchema = z.object({
+  collection_id: z.string(),
+  file_ids: z.array(z.string()).min(1).max(100),
 });
 
-export type DeleteCollectionFilesResponse = z.infer<
-  typeof DeleteCollectionFilesResponseSchema
+export type DeleteCollectionFilesRequest = z.infer<
+  typeof DeleteCollectionFilesRequestSchema
 >;

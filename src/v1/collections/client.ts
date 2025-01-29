@@ -14,7 +14,7 @@ import {
   type CreateLocalConnectorRequest,
   CreateLocalConnectorResponseSchema,
   type DeleteCollectionFilesRequest,
-  DeleteCollectionFilesResponseSchema,
+  DeleteCollectionFilesRequestSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
@@ -172,6 +172,8 @@ export class NeedleCollectionsClient {
   }
 
   async deleteFiles({ collection_id, file_ids }: DeleteCollectionFilesRequest) {
+    DeleteCollectionFilesRequestSchema.parse({ collection_id, file_ids });
+
     const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
     const body = JSON.stringify({ file_ids });
 
@@ -181,10 +183,12 @@ export class NeedleCollectionsClient {
       body,
     });
 
+    if (res.status === 204) {
+      return;
+    }
+
     if (res.status >= 400) {
       throw ApiErrorSchema.parse(await res.json()).error;
     }
-
-    return DeleteCollectionFilesResponseSchema.parse(await res.json()).result;
   }
 }

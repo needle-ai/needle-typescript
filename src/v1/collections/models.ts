@@ -71,18 +71,23 @@ export type AddFilesToCollectionRequest = z.infer<
 export const AddFilesToCollectionResponseSchema = z.object({
   result: z.array(
     z.object({
+      // Required, non-null fields
       id: z.string(),
       name: z.string(),
       type: z.string(),
       status: z.enum(["pending", "indexed", "error"]),
-      error: z.string().nullable(),
       created_at: z.string(),
       user_id: z.string(),
       url: z.string().url(),
+
+      // Nullable fields that API includes with null values
       size: z.number().nullable(),
       md5_hash: z.string().nullable(),
       connector_id: z.string().nullable(),
-      connector: ConnectorSchema.nullable(),
+
+      // Nullable fields that API might omit entirely
+      error: z.string().nullable().optional(),
+      connector: ConnectorSchema.nullable().optional(),
     }),
   ),
 });

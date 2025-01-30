@@ -84,10 +84,24 @@ export class NeedleCollectionsClient {
 
   async listFiles({
     collection_id,
-    offset = 0,
-    limit = 100,
+    offset,
+    limit,
   }: ListCollectionFilesRequest) {
-    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files?offset:${offset}&limit:${limit}`;
+    let url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
+    const params: string[] = [];
+
+    // Only include parameters if they're provided
+    if (typeof offset === "number") {
+      params.push(`offset=${offset}`);
+    }
+    if (typeof limit === "number") {
+      params.push(`limit=${limit}`);
+    }
+
+    // Add query string if we have parameters
+    if (params.length > 0) {
+      url += `?${params.join("&")}`;
+    }
 
     const res = await fetch(url, {
       method: "GET",

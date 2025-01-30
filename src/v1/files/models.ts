@@ -45,11 +45,9 @@ export const GetUploadUrlResponseSchema = z.object({
 export type GetUploadUrlResponse = z.infer<typeof GetUploadUrlResponseSchema>;
 
 export const GetDownloadUrlResponseSchema = z.object({
-  result: z
-    .object({
-      uri: z.string(),
-    })
-    .required(),
+  result: z.object({
+    uri: z.string(),
+  }),
 });
 
 export type GetDownloadUrlResponse = z.infer<

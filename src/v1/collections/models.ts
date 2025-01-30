@@ -39,13 +39,11 @@ export type CreateCollectionRequest = z.infer<
 >;
 
 export const CreateCollectionResponseSchema = z.object({
-  result: z
-    .object({
-      name: z.string(),
-      id: z.string(),
-      created_at: z.string(),
-    })
-    .required(),
+  result: z.object({
+    name: z.string(),
+    id: z.string(),
+    created_at: z.string(),
+  }),
 });
 
 export type CreateCollectionResponse = z.infer<
@@ -146,8 +144,8 @@ export type CollectionFile = z.infer<typeof CollectionFileSchema>;
 
 export const ListCollectionFilesRequestSchema = z.object({
   collection_id: z.string(),
-  offset: z.number().default(0),
-  limit: z.number().min(1).max(500).default(100),
+  offset: z.number().optional(),
+  limit: z.number().min(1).max(500).optional(),
 });
 
 export type ListCollectionFilesRequest = z.infer<

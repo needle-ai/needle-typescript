@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ConnectorSchema } from "../connectors/models";
 
 export const SearchCollectionRequestSchema = z.object({
   collection_id: z.string(),
@@ -38,7 +39,13 @@ export type CreateCollectionRequest = z.infer<
 >;
 
 export const CreateCollectionResponseSchema = z.object({
-  result: z.object({}).required(),
+  result: z
+    .object({
+      name: z.string(),
+      id: z.string(),
+      created_at: z.string(),
+    })
+    .required(),
 });
 
 export type CreateCollectionResponse = z.infer<
@@ -64,7 +71,22 @@ export type AddFilesToCollectionRequest = z.infer<
 >;
 
 export const AddFilesToCollectionResponseSchema = z.object({
-  result: z.array(z.object({})),
+  result: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      type: z.string(),
+      status: z.enum(["pending", "indexed", "error"]),
+      error: z.string().nullable(),
+      created_at: z.string(),
+      user_id: z.string(),
+      url: z.string().url(),
+      size: z.number().nullable(),
+      md5_hash: z.string().nullable(),
+      connector_id: z.string().nullable(),
+      connector: ConnectorSchema.nullable(),
+    }),
+  ),
 });
 
 export type AddFilesToCollectionResponse = z.infer<
@@ -138,41 +160,6 @@ export const ListCollectionFilesResponseSchema = z.object({
 
 export type ListCollectionFilesResponse = z.infer<
   typeof ListCollectionFilesResponseSchema
->;
-
-export interface FolderConfig {
-  path: string;
-  recursive: boolean;
-}
-
-export interface CreateLocalConnectorRequest {
-  os: string;
-  mac_address: string;
-  device_name: string;
-  collection_id: string;
-  folders: FolderConfig[];
-}
-
-export const CreateLocalConnectorResponseSchema = z.object({
-  result: z.object({
-    id: z.string(),
-    os: z.string(),
-    mac_address: z.string(),
-    device_name: z.string(),
-    collection_id: z.string(),
-    folders: z.array(
-      z.object({
-        path: z.string(),
-        recursive: z.boolean(),
-      }),
-    ),
-    created_at: z.string(),
-    updated_at: z.string(),
-  }),
-});
-
-export type CreateLocalConnectorResponse = z.infer<
-  typeof CreateLocalConnectorResponseSchema
 >;
 
 export const DeleteCollectionFilesRequestSchema = z.object({

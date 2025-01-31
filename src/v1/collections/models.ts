@@ -82,7 +82,7 @@ export const AddFilesToCollectionResponseSchema = z.object({
       md5_hash: z.string().nullable(),
       connector_id: z.string().nullable(),
       error: z.string().nullish(),
-      connector: ConnectorSchema..nullish(),
+      connector: ConnectorSchema.nullish(),
     }),
   ),
 });

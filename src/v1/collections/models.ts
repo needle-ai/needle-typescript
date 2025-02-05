@@ -92,6 +92,7 @@ export type AddFilesToCollectionResponse = z.infer<
 >;
 
 export const CollectionSchema = z.object({
+  id: z.string(),
   name: z.string(),
   created_at: z.string(),
   search_queries: z.number(),
@@ -115,10 +116,23 @@ export type GetCollectionDetailsResponse = z.infer<
   typeof GetCollectionDetailsResponseSchema
 >;
 
+export const CollectionFileStatusSchema = z.enum([
+  "pending",
+  "indexed",
+  "error",
+]);
+
 export const CollectionStatsSchema = z.object({
-  total_files: z.number().optional(),
-  total_chunks: z.number().optional(),
-  last_updated_at: z.string().optional(),
+  users: z.number(),
+  chunks_count: z.number(),
+  characters: z.number(),
+  data_stats: z.array(
+    z.object({
+      status: CollectionFileStatusSchema,
+      files: z.number(),
+      bytes: z.number().optional().nullable(),
+    }),
+  ),
 });
 
 export type CollectionStats = z.infer<typeof CollectionStatsSchema>;

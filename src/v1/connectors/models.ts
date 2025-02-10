@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-export const FolderConfigSchema = z.object({
-  path: z.string(),
-  recursive: z.boolean(),
-});
-
-export type FolderConfig = z.infer<typeof FolderConfigSchema>;
-
 export const ConnectorTypeSchema = z.enum([
   "local",
   "google",
@@ -28,49 +21,23 @@ export const ConnectorTypeSchema = z.enum([
 
 export type ConnectorType = z.infer<typeof ConnectorTypeSchema>;
 
-const BaseConnectorRequestSchema = z.object({
-  collection_id: z.string(),
-});
-
-export const LocalConnectorConfigSchema = z.object({
-  type: z.literal("local"),
-  os: z.string(),
-  mac_address: z.string(),
-  device_name: z.string(),
-  folders: z.array(FolderConfigSchema),
-});
-
-export type LocalConnectorConfig = z.infer<typeof LocalConnectorConfigSchema>;
-
-export const CreateConnectorRequestSchema = BaseConnectorRequestSchema.and(
-  z.discriminatedUnion("type", [
-    LocalConnectorConfigSchema,
-    // Add other connector types here as needed
-  ]),
-);
-
-export type CreateConnectorRequest = z.infer<
-  typeof CreateConnectorRequestSchema
->;
-
 export const ConnectorSchema = z.object({
+  type: z.string(),
+  status: z.string(),
   id: z.string(),
-  type: ConnectorTypeSchema,
-  os: z.string().optional(),
-  mac_address: z.string().optional(),
-  device_name: z.string().optional(),
-  collection_id: z.string(),
-  folders: z.array(FolderConfigSchema).optional(),
+  name: z.string(),
   created_at: z.string(),
-  updated_at: z.string(),
+  cron_job: z.string(),
+  timezone: z.string(),
+  error: z.string().nullable(),
 });
 
 export type Connector = z.infer<typeof ConnectorSchema>;
 
-export const CreateConnectorResponseSchema = z.object({
-  result: ConnectorSchema,
+export const ListConnectorsResponseSchema = z.object({
+  result: z.array(ConnectorSchema),
 });
 
-export type CreateConnectorResponse = z.infer<
-  typeof CreateConnectorResponseSchema
+export type ListConnectorsResponse = z.infer<
+  typeof ListConnectorsResponseSchema
 >;

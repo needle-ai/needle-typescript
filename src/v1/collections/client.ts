@@ -1,24 +1,20 @@
 import { ApiErrorSchema } from "../models";
+import { NeedleCollectionFilesClient } from "./files/client";
 import {
   type SearchCollectionRequest,
+  type CreateCollectionRequest,
   SearchCollectionResponseSchema,
-  CreateCollectionRequest,
   CreateCollectionResponseSchema,
-  type AddFilesToCollectionRequest,
-  AddFilesToCollectionResponseSchema,
   ListCollectionsResponseSchema,
   GetCollectionDetailsResponseSchema,
   GetCollectionStatsResponseSchema,
-  type ListCollectionFilesRequest,
-  ListCollectionFilesResponseSchema,
-  type DeleteCollectionFilesRequest,
-  DeleteCollectionFilesRequestSchema,
 } from "./models";
 
 export class NeedleCollectionsClient {
   private readonly needleUrl: string;
   private readonly needleSearchUrl: string;
   private readonly headers: Record<string, string>;
+  readonly files: NeedleCollectionFilesClient;
 
   constructor({
     needleUrl,
@@ -35,6 +31,10 @@ export class NeedleCollectionsClient {
       "Content-Type": "application/json",
       "x-api-key": apiKey,
     };
+    this.files = new NeedleCollectionFilesClient({
+      needleUrl,
+      apiKey,
+    });
   }
 
   async list() {
@@ -52,8 +52,8 @@ export class NeedleCollectionsClient {
     return ListCollectionsResponseSchema.parse(await res.json()).result;
   }
 
-  async get(collectionId: string) {
-    const url = `${this.needleUrl}/api/v1/collections/${collectionId}`;
+  async get({ collection_id }: { collection_id: string }) {
+    const url = `${this.needleUrl}/api/v1/collections/${collection_id}`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -67,8 +67,8 @@ export class NeedleCollectionsClient {
     return GetCollectionDetailsResponseSchema.parse(await res.json()).result;
   }
 
-  async getStats(collectionId: string) {
-    const url = `${this.needleUrl}/api/v1/collections/${collectionId}/stats`;
+  async getStats({ collection_id }: { collection_id: string }) {
+    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/stats`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -82,42 +82,14 @@ export class NeedleCollectionsClient {
     return GetCollectionStatsResponseSchema.parse(await res.json()).result;
   }
 
-  async listFiles({
+  async search({
     collection_id,
-    offset,
-    limit,
-  }: ListCollectionFilesRequest) {
-    let url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
-    const params: string[] = [];
-
-    // Only include parameters if they're provided
-    if (typeof offset === "number") {
-      params.push(`offset=${offset}`);
-    }
-    if (typeof limit === "number") {
-      params.push(`limit=${limit}`);
-    }
-
-    // Add query string if we have parameters
-    if (params.length > 0) {
-      url += `?${params.join("&")}`;
-    }
-
-    const res = await fetch(url, {
-      method: "GET",
-      headers: this.headers,
-    });
-
-    if (res.status >= 400) {
-      throw ApiErrorSchema.parse(await res.json()).error;
-    }
-
-    return ListCollectionFilesResponseSchema.parse(await res.json()).result;
-  }
-
-  async search({ collection_id, ...request }: SearchCollectionRequest) {
+    text,
+    max_distance,
+    top_k,
+  }: SearchCollectionRequest) {
     const url = `${this.needleSearchUrl}/api/v1/collections/${collection_id}/search`;
-    const body = JSON.stringify(request);
+    const body = JSON.stringify({ text, max_distance, top_k });
 
     const res = await fetch(url, {
       method: "POST",
@@ -132,9 +104,9 @@ export class NeedleCollectionsClient {
     return SearchCollectionResponseSchema.parse(await res.json()).result;
   }
 
-  async create(request: CreateCollectionRequest) {
+  async create(params: CreateCollectionRequest) {
     const url = `${this.needleUrl}/api/v1/collections`;
-    const body = JSON.stringify(request);
+    const body = JSON.stringify(params);
 
     const res = await fetch(url, {
       method: "POST",
@@ -147,43 +119,5 @@ export class NeedleCollectionsClient {
     }
 
     return CreateCollectionResponseSchema.parse(await res.json()).result;
-  }
-
-  async addFiles({ collection_id, files }: AddFilesToCollectionRequest) {
-    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
-    const body = JSON.stringify({ files });
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: this.headers,
-      body,
-    });
-
-    if (res.status >= 400) {
-      throw ApiErrorSchema.parse(await res.json()).error;
-    }
-
-    return AddFilesToCollectionResponseSchema.parse(await res.json()).result;
-  }
-
-  async deleteFiles({ collection_id, file_ids }: DeleteCollectionFilesRequest) {
-    DeleteCollectionFilesRequestSchema.parse({ collection_id, file_ids });
-
-    const url = `${this.needleUrl}/api/v1/collections/${collection_id}/files`;
-    const body = JSON.stringify({ file_ids });
-
-    const res = await fetch(url, {
-      method: "DELETE",
-      headers: this.headers,
-      body,
-    });
-
-    if (res.status === 204) {
-      return;
-    }
-
-    if (res.status >= 400) {
-      throw ApiErrorSchema.parse(await res.json()).error;
-    }
   }
 }

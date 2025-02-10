@@ -35,8 +35,8 @@ export class NeedleFilesClient {
     return GetUploadUrlResponseSchema.parse(await res.json()).result;
   }
 
-  async getDownloadUrl(fileId: string) {
-    const url = `${this.needleUrl}/api/v1/files/${fileId}/download_url`;
+  async getDownloadUrl({ file_id }: { file_id: string }) {
+    const url = `${this.needleUrl}/api/v1/files/${file_id}/download_url`;
 
     const res = await fetch(url, {
       method: "GET",

@@ -1,12 +1,13 @@
 import { ApiErrorSchema } from "../models";
-import {
-  type CreateConnectorRequest,
-  CreateConnectorResponseSchema,
-} from "./models";
+import { NeedleConnectorFilesClient } from "./files/client";
+import { NeedleLocalConnectorClient } from "./local/client";
+import { ListConnectorsResponseSchema } from "./models";
 
 export class NeedleConnectorsClient {
   private readonly needleUrl: string;
   private readonly headers: Record<string, string>;
+  readonly files: NeedleConnectorFilesClient;
+  readonly local: NeedleLocalConnectorClient;
 
   constructor({ needleUrl, apiKey }: { needleUrl: string; apiKey: string }) {
     this.needleUrl = needleUrl;
@@ -14,22 +15,22 @@ export class NeedleConnectorsClient {
       "Content-Type": "application/json",
       "x-api-key": apiKey,
     };
+
+    // sub-clients
+    this.files = new NeedleConnectorFilesClient({ needleUrl, apiKey });
+    this.local = new NeedleLocalConnectorClient({ needleUrl, apiKey });
   }
 
-  async create(request: CreateConnectorRequest) {
-    const url = `${this.needleUrl}/api/v1/connectors/${request.type}`;
-    const body = JSON.stringify(request);
-
+  async list() {
+    const url = `${this.needleUrl}/api/v1/connectors`;
     const res = await fetch(url, {
-      method: "POST",
       headers: this.headers,
-      body,
     });
 
     if (res.status >= 400) {
       throw ApiErrorSchema.parse(await res.json()).error;
     }
 
-    return CreateConnectorResponseSchema.parse(await res.json()).result;
+    return ListConnectorsResponseSchema.parse(await res.json()).result;
   }
 }

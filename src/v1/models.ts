@@ -16,3 +16,8 @@ export const ApiErrorSchema = z.object({
 });
 
 export type ApiError = z.infer<typeof ApiErrorSchema>;
+
+export type NonPaginated<RequestParams> = Omit<
+  RequestParams,
+  "offset" | "limit"
+>;

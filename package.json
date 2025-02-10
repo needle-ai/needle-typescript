@@ -1,6 +1,6 @@
 {
   "name": "@needle-ai/needle",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "This Typescript library provides convenient access to the Needle API.",
   "homepage": "https://github.com/oeken/needle-typescript",
   "bugs": {
@@ -50,24 +50,30 @@
     "type": "git",
     "url": "git+https://github.com/oeken/needle-typescript.git"
   },
+  "scripts": {
+    "lint": "bun format:check && eslint src",
+    "format:fix": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "tsup"
+  },
   "dependencies": {
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "jiti": "^2.4.2",
+    "typescript-eslint": "^8.22.0",
     "@tsconfig/recommended": "^1.0.7",
-    "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
-    "@typescript-eslint/eslint-plugin": "^8.1.0",
-    "@typescript-eslint/parser": "^8.1.0",
-    "eslint": "^8.57.0",
-    "prettier": "^3.3.2",
+    "@types/eslint": "^9.6.1",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "eslint": "^9.19.0",
+    "prettier": "^3.4.2",
     "tsup": "^8.3.4",
     "typescript": "^5.5.3"
   },
   "peerDependencies": {},
-  "scripts": {
-    "build": "tsup"
-  },
   "files": [
     "dist",
     "README.md",

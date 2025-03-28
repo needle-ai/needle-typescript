@@ -3,8 +3,8 @@ import { z } from "zod";
 export const SearchCollectionRequestSchema = z.object({
   collection_id: z.string(),
   text: z.string(),
-  max_distance: z.number().optional(),
   top_k: z.number().optional(),
+  offset: z.number().optional(),
 });
 
 export type SearchCollectionRequest = z.infer<

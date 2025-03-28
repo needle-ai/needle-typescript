@@ -85,11 +85,11 @@ export class NeedleCollectionsClient {
   async search({
     collection_id,
     text,
-    max_distance,
     top_k,
+    offset,
   }: SearchCollectionRequest) {
     const url = `${this.needleSearchUrl}/api/v1/collections/${collection_id}/search`;
-    const body = JSON.stringify({ text, max_distance, top_k });
+    const body = JSON.stringify({ text, top_k, offset });
 
     const res = await fetch(url, {
       method: "POST",

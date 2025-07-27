@@ -29,7 +29,7 @@ export const ConnectorSchema = z.object({
   created_at: z.string(),
   cron_job: z.string(),
   timezone: z.string(),
-  error: z.string().nullable(),
+  error: z.string().nullish(),
 });
 
 export type Connector = z.infer<typeof ConnectorSchema>;

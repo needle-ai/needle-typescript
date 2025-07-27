@@ -1,6 +1,6 @@
 {
   "name": "@needle-ai/needle",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "This Typescript library provides convenient access to the Needle API.",
   "homepage": "https://github.com/oeken/needle-typescript",
   "bugs": {

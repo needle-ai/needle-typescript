@@ -2,7 +2,7 @@
 
 ![NPM Version](https://img.shields.io/npm/v/@needle-ai/needle)
 
-This Typescript library provides convenient acccess to Needle API. Using Needle API you can effortlessly develop RAG-based agentic applications, see below for an example. There are various functions and data types which will help you get started quickly. Some functionality will be available in REST API earlier than this library therefore we recommend taking a look the the complete [documentation](https://docs.needle-ai.com). Thank you for flying with us. 🚀
+This Typescript library provides convenient acccess to Needle API. Using Needle API you can effortlessly develop RAG-based agentic applications, see below for an example. There are various functions and data types which will help you get started quickly. Some functionality will be available in REST API earlier than this library therefore we recommend taking a look the the complete [documentation](https://docs.needle.app). Thank you for flying with us. 🚀
 
 Note: this library is built for Node.js runtime.
 
@@ -24,7 +24,7 @@ or with any other package manager of your choice.
 
 ## Usage ⚡️
 
-To get started, generate an API key for your account in developer settings menu at [Needle](https://needle-ai.com). Note that your key will be valid until you revoke it. Set the following env variable before you run your code:
+To get started, generate an API key for your account in developer settings menu at [Needle](https://needle.app). Note that your key will be valid until you revoke it. Set the following env variable before you run your code:
 
 ```sh
 export NEEDLE_API_KEY=<your-api-key>
@@ -48,7 +48,7 @@ const results = await ndl.collections.search({
 });
 ```
 
-Needle instantly extracts relevant passages for your prompt from your files. You can look up your collection id in the [Needle dashboard](https://needle-ai.com/dashboard/collections).
+Needle instantly extracts relevant passages for your prompt from your files. You can look up your collection id in the [Needle dashboard](https://needle.app/dashboard/collections).
 
 ### Complete your RAG pipeline
 

@@ -25,11 +25,10 @@ export const SearchCollectionResponseSchema = z.object({
 
 export const CreateCollectionRequestSchema = z.object({
   name: z.string().min(1),
-  file_ids: z.array(z.string()).nullable().optional(),
+  file_ids: z.array(z.string()).nullish(),
   model: z
     .enum(["basilikum-minima", "mate-meta", "tortellini-maxima"])
-    .nullable()
-    .optional()
+    .nullish()
     .default("basilikum-minima"),
 });
 
@@ -88,7 +87,7 @@ export const CollectionStatsSchema = z.object({
     z.object({
       status: CollectionFileStatusSchema,
       files: z.number(),
-      bytes: z.number().optional().nullable(),
+      bytes: z.number().nullish(),
     }),
   ),
 });

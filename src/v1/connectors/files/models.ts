@@ -7,13 +7,13 @@ export const ConnectorFileSchema = z.object({
   created_at: z.string().transform((str) => new Date(str)),
   updated_at: z
     .string()
-    .nullable()
+    .nullish()
     .transform((str) => (str ? new Date(str) : null)),
   user_id: z.string(),
-  connector_id: z.string().nullable(),
+  connector_id: z.string().nullish(),
   url: z.string(),
-  size: z.number().nullable(),
-  md5_hash: z.string().nullable(),
+  size: z.number().nullish(),
+  md5_hash: z.string().nullish(),
 });
 
 export const ListConnectorFilesResponseSchema = z.object({

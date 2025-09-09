@@ -17,10 +17,17 @@ export const ContentType = z.union([
   z.literal("application/msword"),
   z.literal("application/vnd.ms-excel"),
   z.literal("application/vnd.ms-powerpoint"),
+  // text
+  z.literal("text/markdown"),
   z.literal("text/csv"),
   z.literal("text/html"),
   z.literal("text/calendar"),
   z.literal("text/plain"),
+  // images
+  z.literal("image/png"),
+  z.literal("image/jpeg"),
+  z.literal("image/gif"),
+  z.literal("image/webp"),
 ]);
 
 export type ContentType = z.infer<typeof ContentType>;
